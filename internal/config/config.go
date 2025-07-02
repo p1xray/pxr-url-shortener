@@ -3,13 +3,28 @@ package config
 import (
 	"flag"
 	"os"
+	"time"
 
 	"github.com/ilyakaznacheev/cleanenv"
 )
 
 // Config is the project configuration.
 type Config struct {
-	Env string `yaml:"env" env-default:"local"`
+	Env  string     `yaml:"env" env-default:"local"`
+	GRPC GRPCConfig `yaml:"grpc" env-required:"true"`
+	HTTP HTTPConfig `yaml:"http" env-required:"true"`
+}
+
+// GRPCConfig is the gRPC server configuration.
+type GRPCConfig struct {
+	Port    int           `yaml:"port" env-required:"true"`
+	Timeout time.Duration `yaml:"timeout" env-required:"true"`
+}
+
+// HTTPConfig is the HTTP server configuration.
+type HTTPConfig struct {
+	Port    int           `yaml:"port" env-required:"true"`
+	Timeout time.Duration `yaml:"timeout" env-required:"true"`
 }
 
 // MustLoad loads config and panics if any error occurs.

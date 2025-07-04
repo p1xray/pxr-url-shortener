@@ -4,7 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	controller "github.com/p1xray/pxr-url-shortener/internal/controller/http"
 	"github.com/p1xray/pxr-url-shortener/internal/lib/logger/sl"
+	"github.com/p1xray/pxr-url-shortener/internal/server"
 	"log/slog"
 	"net/http"
 	"time"
@@ -17,12 +19,12 @@ type App struct {
 }
 
 // New creates new instance of HTTP server application.
-func New(log *slog.Logger, port int) *App {
-	// TODO: create handlers
+func New(log *slog.Logger, port int, service server.URLService) *App {
+	handlers := controller.New(service)
 
 	httpServer := &http.Server{
-		Addr: fmt.Sprintf(":%d", port),
-		// Handler: handlers.Init(),
+		Addr:    fmt.Sprintf(":%d", port),
+		Handler: handlers.Init(),
 	}
 
 	return &App{

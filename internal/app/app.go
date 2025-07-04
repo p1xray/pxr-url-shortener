@@ -4,6 +4,8 @@ import (
 	grpcapp "github.com/p1xray/pxr-url-shortener/internal/app/grpc"
 	httpapp "github.com/p1xray/pxr-url-shortener/internal/app/http"
 	"github.com/p1xray/pxr-url-shortener/internal/config"
+	"github.com/p1xray/pxr-url-shortener/internal/service"
+	"github.com/p1xray/pxr-url-shortener/internal/storage/sqlite"
 	"log/slog"
 )
 
@@ -18,12 +20,15 @@ func New(
 	log *slog.Logger,
 	cfg *config.Config,
 ) *App {
-	// TODO: create storage instance
+	storage, err := sqlite.New(cfg.StoragePath)
+	if err != nil {
+		panic(err)
+	}
 
-	// TODO: create service instance
+	URLService := service.New(cfg.ShortCodeGenerator, storage)
 
 	grpcApp := grpcapp.New(log, cfg.GRPC.Port)
-	httpApp := httpapp.New(log, cfg.HTTP.Port)
+	httpApp := httpapp.New(log, cfg.HTTP.Port, URLService)
 
 	return &App{
 		GRPCServer: grpcApp,

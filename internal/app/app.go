@@ -25,10 +25,10 @@ func New(
 		panic(err)
 	}
 
-	URLService := service.New(cfg.ShortCodeGenerator, storage)
+	urlService := service.New(cfg.ShortCodeGenerator, storage)
 
-	grpcApp := grpcapp.New(log, cfg.GRPC.Port)
-	httpApp := httpapp.New(log, cfg.HTTP.Port, URLService)
+	grpcApp := grpcapp.New(log, cfg.GRPC.Port, urlService)
+	httpApp := httpapp.New(log, cfg.HTTP.Port, urlService)
 
 	return &App{
 		GRPCServer: grpcApp,

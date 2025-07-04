@@ -14,3 +14,10 @@ tasks:
     desc: 'up migrations'
     cmds:
       - go run ./cmd/migrator --storage-path=./storage/url-shortener.db -migrations-path=./migrations
+
+  generate:
+    aliases:
+      - proto
+    desc: 'Generate code from proto files'
+    cmds:
+      - protoc -I proto proto/urlshortener.proto --go_out=./pkg/grpc/gen/go/urlshortener --go_opt=paths=source_relative --go-grpc_out=./pkg/grpc/gen/go/urlshortener --go-grpc_opt=paths=source_relative

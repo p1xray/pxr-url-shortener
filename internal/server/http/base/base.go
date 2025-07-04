@@ -4,6 +4,8 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/p1xray/pxr-url-shortener/internal/server"
+	"github.com/p1xray/pxr-url-shortener/internal/server/http/request"
+	http2 "github.com/p1xray/pxr-url-shortener/internal/server/http/response"
 	"github.com/p1xray/pxr-url-shortener/internal/storage"
 	"net/http"
 )
@@ -24,20 +26,20 @@ func (r *Routes) Init(g *gin.Engine) {
 }
 
 func (r *Routes) redirectByShortCode(c *gin.Context) {
-	shortCode, err := server.GetParamFromRoute(c, "short-code")
+	shortCode, err := request.GetParamFromRoute(c, "short-code")
 	if err != nil {
-		server.NotFoundResponse(c, "short code not found")
+		http2.NotFound(c, "short code not found")
 		return
 	}
 
 	longURL, err := r.service.LongURL(c.Request.Context(), shortCode)
 	if err != nil {
 		if errors.Is(err, storage.ErrEntityNotFound) {
-			server.NotFoundResponse(c, "long url not found")
+			http2.NotFound(c, "long url not found")
 			return
 		}
 
-		server.ErrorResponse(c, "internal server error")
+		http2.InternalServerError(c, "internal server error")
 		return
 	}
 

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package urlshortener;
+
+option go_package = "pxr.urlshortener;urlshortenerpb;";
+
+service UrlShortener {
+  rpc Shorten(ShortenRequest) returns (ShortenResponse);
+}
+
+message ShortenRequest {
+  string longUrl = 1;
+}
+
+message ShortenResponse {
+  string shortCode = 1;
+}

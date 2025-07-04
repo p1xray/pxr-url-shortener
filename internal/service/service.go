@@ -12,9 +12,16 @@ import (
 
 // Storage represents a URL storage.
 type Storage interface {
+	// URLByLongURL returns URL entity by long URL from storage.
 	URLByLongURL(ctx context.Context, longURL string) (domain.URL, error)
+
+	// IsURLExistByShortCode checks for the presence of a URL entity by short code in storage.
 	IsURLExistByShortCode(ctx context.Context, shortCode string) (bool, error)
+
+	// URLByShortCode returns URL entity by short code from storage.
 	URLByShortCode(ctx context.Context, shortCode string) (domain.URL, error)
+
+	// CreateURL creating the new URL in storage.
 	CreateURL(ctx context.Context, url entity.ShortURL) error
 }
 

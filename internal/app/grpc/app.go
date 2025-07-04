@@ -2,8 +2,11 @@ package grpcapp
 
 import (
 	"fmt"
+	"github.com/p1xray/pxr-url-shortener/internal/server"
 	"log/slog"
 	"net"
+
+	urlservice "github.com/p1xray/pxr-url-shortener/internal/server/grpc/url"
 
 	"google.golang.org/grpc"
 )
@@ -19,10 +22,11 @@ type App struct {
 func New(
 	log *slog.Logger,
 	port int,
+	service server.URLService,
 ) *App {
 	gRPCServer := grpc.NewServer()
-
-	// TODO: register grpc server
+	
+	urlservice.Register(gRPCServer, service)
 
 	return &App{
 		log:        log,

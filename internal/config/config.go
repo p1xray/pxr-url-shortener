@@ -10,9 +10,10 @@ import (
 
 // Config is the project configuration.
 type Config struct {
-	Env  string     `yaml:"env" env-default:"local"`
-	GRPC GRPCConfig `yaml:"grpc" env-required:"true"`
-	HTTP HTTPConfig `yaml:"http" env-required:"true"`
+	Env                string                   `yaml:"env" env-default:"local"`
+	GRPC               GRPCConfig               `yaml:"grpc" env-required:"true"`
+	HTTP               HTTPConfig               `yaml:"http" env-required:"true"`
+	ShortCodeGenerator ShortCodeGeneratorConfig `yaml:"shortcode" env-required:"true"`
 }
 
 // GRPCConfig is the gRPC server configuration.
@@ -25,6 +26,11 @@ type GRPCConfig struct {
 type HTTPConfig struct {
 	Port    int           `yaml:"port" env-required:"true"`
 	Timeout time.Duration `yaml:"timeout" env-required:"true"`
+}
+
+// ShortCodeGeneratorConfig is the short code generator configuration.
+type ShortCodeGeneratorConfig struct {
+	Length int `yaml:"length" env-required:"true"`
 }
 
 // MustLoad loads config and panics if any error occurs.

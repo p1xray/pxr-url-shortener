@@ -1,4 +1,6 @@
 env: 'local'
+shortcode:
+  length: 5
 grpc:
   port: 6007
   timeout: 1h

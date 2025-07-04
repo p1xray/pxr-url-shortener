@@ -2,7 +2,7 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/p1xray/pxr-url-shortener/internal/controller/http/v1/ping"
+	"github.com/p1xray/pxr-url-shortener/internal/server/http/v1/ping"
 )
 
 // Handler is request handler for API v1.

@@ -2,9 +2,9 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/p1xray/pxr-url-shortener/internal/controller/http/base"
-	v1 "github.com/p1xray/pxr-url-shortener/internal/controller/http/v1"
 	"github.com/p1xray/pxr-url-shortener/internal/server"
+	"github.com/p1xray/pxr-url-shortener/internal/server/http/base"
+	"github.com/p1xray/pxr-url-shortener/internal/server/http/v1"
 )
 
 // Handler is handler for http server requests.

@@ -14,6 +14,7 @@ import (
 type Storage interface {
 	URLByLongURL(ctx context.Context, longURL string) (domain.URL, error)
 	IsURLExistByShortCode(ctx context.Context, shortCode string) (bool, error)
+	URLByShortCode(ctx context.Context, shortCode string) (domain.URL, error)
 	CreateURL(ctx context.Context, url entity.ShortURL) error
 }
 
@@ -63,6 +64,19 @@ func (s *Service) Shorten(ctx context.Context, longURL string) (string, error) {
 	}
 
 	return shortURL.ShortCode, nil
+}
+
+// LongURL returns a long URL by short code.
+func (s *Service) LongURL(ctx context.Context, shortCode string) (string, error) {
+	const op = "service.LongURL"
+
+	// get URL by short code.
+	url, err := s.storage.URLByShortCode(ctx, shortCode)
+	if err != nil {
+		return "", fmt.Errorf("%s: %w", op, err)
+	}
+
+	return url.LongUrl, nil
 }
 
 func (s *Service) verifyShortCodeUniqueness(ctx context.Context, shortURL entity.ShortURL) (entity.ShortURL, error) {

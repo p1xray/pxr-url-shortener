@@ -1,0 +1,10 @@
+env: 'local'
+storage_path: './storage/url-shortener.db'
+shortcode:
+  length: 5
+grpc:
+  port: 6007
+  timeout: 1h
+http:
+  port: 6008
+  timeout: 1h

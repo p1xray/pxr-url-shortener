@@ -1,4 +1,5 @@
 env: 'local'
+storage_path: './storage/url-shortener.db'
 shortcode:
   length: 5
 grpc:

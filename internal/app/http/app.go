@@ -19,11 +19,11 @@ type App struct {
 }
 
 // New creates new instance of HTTP server application.
-func New(log *slog.Logger, port int, service server.URLService) *App {
+func New(log *slog.Logger, addr string, service server.URLService) *App {
 	handlers := httpserver.New(service)
 
 	httpServer := &http.Server{
-		Addr:    fmt.Sprintf(":%d", port),
+		Addr:    addr,
 		Handler: handlers.Init(),
 	}
 

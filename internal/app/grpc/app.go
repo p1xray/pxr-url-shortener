@@ -2,6 +2,7 @@ package grpcapp
 
 import (
 	"fmt"
+	"github.com/p1xray/pxr-url-shortener/internal/config"
 	"github.com/p1xray/pxr-url-shortener/internal/server"
 	"log/slog"
 	"net"
@@ -21,17 +22,17 @@ type App struct {
 // New creates new gRPC server application.
 func New(
 	log *slog.Logger,
-	port int,
+	cfg *config.Config,
 	service server.URLService,
 ) *App {
 	gRPCServer := grpc.NewServer()
-	
-	urlservice.Register(gRPCServer, service)
+
+	urlservice.Register(gRPCServer, service, cfg.HTTP)
 
 	return &App{
 		log:        log,
 		gRPCServer: gRPCServer,
-		port:       port,
+		port:       cfg.GRPC.Port,
 	}
 }
 

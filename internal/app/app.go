@@ -27,8 +27,8 @@ func New(
 
 	urlService := service.New(cfg.ShortCodeGenerator, storage)
 
-	grpcApp := grpcapp.New(log, cfg.GRPC.Port, urlService)
-	httpApp := httpapp.New(log, cfg.HTTP.Port, urlService)
+	grpcApp := grpcapp.New(log, cfg, urlService)
+	httpApp := httpapp.New(log, cfg.HTTP.Addr, urlService)
 
 	return &App{
 		GRPCServer: grpcApp,

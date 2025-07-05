@@ -25,7 +25,7 @@ type GRPCConfig struct {
 
 // HTTPConfig is the HTTP server configuration.
 type HTTPConfig struct {
-	Port    int           `yaml:"port" env-required:"true"`
+	Addr    string        `yaml:"address" env-required:"true"`
 	Timeout time.Duration `yaml:"timeout" env-required:"true"`
 }
 

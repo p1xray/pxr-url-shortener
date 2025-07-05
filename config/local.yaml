@@ -6,5 +6,5 @@ grpc:
   port: 6007
   timeout: 1h
 http:
-  port: 6008
+  address: 'localhost:6008'
   timeout: 1h

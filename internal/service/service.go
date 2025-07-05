@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/p1xray/pxr-url-shortener/internal/config"
+	"github.com/p1xray/pxr-url-shortener/internal/dto"
 	"github.com/p1xray/pxr-url-shortener/internal/entity"
 	"github.com/p1xray/pxr-url-shortener/internal/storage"
 	"github.com/p1xray/pxr-url-shortener/internal/storage/domain"
@@ -40,37 +41,39 @@ func New(cfg config.ShortCodeGeneratorConfig, storage Storage) *Service {
 }
 
 // Shorten generates a new unique short code for URL.
-func (s *Service) Shorten(ctx context.Context, longURL string) (string, error) {
+func (s *Service) Shorten(ctx context.Context, longURL, host string) (dto.Shorten, error) {
 	const op = "service.Shorten"
 
 	// first, check if a short URL exists.
 	existingURL, err := s.storage.URLByLongURL(ctx, longURL)
 	if err != nil && !errors.Is(err, storage.ErrEntityNotFound) {
-		return "", fmt.Errorf("%s: %w", op, err)
+		return dto.Shorten{}, fmt.Errorf("%s: %w", op, err)
 	}
 
 	if existingURL.ShortCode != "" {
-		return existingURL.ShortCode, nil
+		shortURL := entity.NewWithExistingShortCode(existingURL.LongUrl, existingURL.ShortCode, host)
+
+		return dto.Shorten{ShortCode: shortURL.ShortCode, ShortURL: shortURL.ShortURL}, nil
 	}
 
 	// create a new short URL.
-	shortURL, err := entity.New(longURL, s.cfg.Length)
+	shortURL, err := entity.New(longURL, host, s.cfg.Length)
 	if err != nil {
-		return "", fmt.Errorf("%s: %w", op, err)
+		return dto.Shorten{}, fmt.Errorf("%s: %w", op, err)
 	}
 
 	// verify short code uniqueness.
 	shortURL, err = s.verifyShortCodeUniqueness(ctx, shortURL)
 	if err != nil {
-		return "", fmt.Errorf("%s: %w", op, err)
+		return dto.Shorten{}, fmt.Errorf("%s: %w", op, err)
 	}
 
 	// save a new short URL to storage.
 	if err = s.storage.CreateURL(ctx, shortURL); err != nil {
-		return "", fmt.Errorf("%s: %w", op, err)
+		return dto.Shorten{}, fmt.Errorf("%s: %w", op, err)
 	}
 
-	return shortURL.ShortCode, nil
+	return dto.Shorten{ShortCode: shortURL.ShortCode, ShortURL: shortURL.ShortURL}, nil
 }
 
 // LongURL returns a long URL by short code.

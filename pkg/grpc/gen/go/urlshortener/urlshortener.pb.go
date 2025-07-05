@@ -68,6 +68,7 @@ func (x *ShortenRequest) GetLongUrl() string {
 type ShortenResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ShortCode     string                 `protobuf:"bytes,1,opt,name=shortCode,proto3" json:"shortCode,omitempty"`
+	ShortUrl      string                 `protobuf:"bytes,2,opt,name=shortUrl,proto3" json:"shortUrl,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -109,15 +110,23 @@ func (x *ShortenResponse) GetShortCode() string {
 	return ""
 }
 
+func (x *ShortenResponse) GetShortUrl() string {
+	if x != nil {
+		return x.ShortUrl
+	}
+	return ""
+}
+
 var File_urlshortener_proto protoreflect.FileDescriptor
 
 const file_urlshortener_proto_rawDesc = "" +
 	"\n" +
 	"\x12urlshortener.proto\x12\furlshortener\"*\n" +
 	"\x0eShortenRequest\x12\x18\n" +
-	"\alongUrl\x18\x01 \x01(\tR\alongUrl\"/\n" +
+	"\alongUrl\x18\x01 \x01(\tR\alongUrl\"K\n" +
 	"\x0fShortenResponse\x12\x1c\n" +
-	"\tshortCode\x18\x01 \x01(\tR\tshortCode2V\n" +
+	"\tshortCode\x18\x01 \x01(\tR\tshortCode\x12\x1a\n" +
+	"\bshortUrl\x18\x02 \x01(\tR\bshortUrl2V\n" +
 	"\fUrlShortener\x12F\n" +
 	"\aShorten\x12\x1c.urlshortener.ShortenRequest\x1a\x1d.urlshortener.ShortenResponseB\"Z pxr.urlshortener;urlshortenerpb;b\x06proto3"
 
